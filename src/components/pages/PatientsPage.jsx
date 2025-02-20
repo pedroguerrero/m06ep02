@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import background from '../../assets/bg.jpg';
 import Row from '../components/Row';
 import Modal from '../components/Modal';
@@ -7,6 +7,7 @@ import { getDoctors } from '../utils/doctor';
 import Container from '../components/Container';
 import { DoctorsContext } from '../../store/DoctorsContext';
 import AppointmentForm from '../components/AppointmentForm';
+import { addPatientToDB, getPatientsFromDB } from '../utils/db';
 
 export default function PatientsPage() {
   const [patient, setPatient] = useState({
@@ -36,6 +37,10 @@ export default function PatientsPage() {
         setDoctors(doctors);
       })
       .catch(() => alert('Error al obtener los medicos'));
+
+    getPatientsFromDB().then((patients) => {
+      setPatients(patients);
+    });
   }, [doctors.length, setDoctors]);
 
   return (
@@ -61,6 +66,14 @@ export default function PatientsPage() {
               alert('Todos los campos son requeridos');
               return;
             }
+
+            addPatientToDB(patient)
+              .then((d) => {
+                console.log(d);
+              })
+              .catch(() => {
+                alert('Error al guardar el paciente');
+              });
 
             setPatients((patients) => [...patients, patient]);
 

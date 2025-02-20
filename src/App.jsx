@@ -15,6 +15,9 @@ function App() {
   const [doctors, setDoctors] = useState([]);
   const [doctor, setDoctor] = useState({});
   const [showModalDoctor, setShowModalDoctor] = useState(false);
+  const [userName, setUserName] = useState(
+    localStorage.getItem('username') || 'Pedro Guerrero'
+  );
 
   return (
     <>
@@ -43,7 +46,6 @@ function App() {
                 <Image src={hospitalSvg} alt="" height="40" className="me-2" />
                 VidaPlena
               </NavLink>
-
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 {navPages.map(({ path, name }) => (
                   <li key={path} className="nav-item">
@@ -58,6 +60,19 @@ function App() {
                   </li>
                 ))}
               </ul>
+
+              <span>{userName}</span>
+
+              <Button
+                className="btn btn-secondary"
+                onClick={() => {
+                  const user = `Usuario ${Math.floor(Math.random() * 1000)}`;
+                  setUserName(user);
+                  localStorage.setItem('username', user);
+                }}
+              >
+                Cambiar Nombre
+              </Button>
             </Container>
           </Container>
         </NavBar>
